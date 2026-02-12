@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>給老公的情人節驚喜</title>
+    <title>給陳先生的情人節驚喜</title>
     <style>
         body, html {
             margin: 0; padding: 0; height: 100%;
@@ -11,7 +11,7 @@
             background-color: transparent; overflow: hidden;
         }
 
-        /* 滿版背景圖層 */
+        /* 1. 滿版背景：固定在最底層，絕對不會閃爍 */
         .full-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2;
@@ -28,7 +28,7 @@
         .active { display: flex; animation: fadeIn 0.5s ease; }
 
         .content-box {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.65);
             padding: 25px; border-radius: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             max-width: 85%; width: 300px;
@@ -80,7 +80,9 @@
 
     <div class="full-bg"></div>
 
-    <div id="player" style="position: absolute; top: -1000px;"></div>
+    <audio id="bgMusic" preload="auto">
+        <source src="Ed Sheeran-One Life.mp3" type="audio/mpeg">
+    </audio>
 
     <div id="screen1" class="screen active">
         <div class="content-box">
@@ -116,7 +118,6 @@
     <div id="screen4" class="screen">
         <div class="content-box">
             <h1>翻開獎勵</h1>
-            <p>請從兩張獎勵中擇一：</p>
             <div class="card-wrap">
                 <div class="card card-pink" onclick="finalSurprise('A')">卡牌 A</div>
                 <div class="card card-blue" onclick="finalSurprise('B')">卡牌 B</div>
@@ -136,41 +137,28 @@
         </div>
     </div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let currentChoice = '';
-        let player;
         const data = {
             '機會': { 
-                A: { name: '《深夜食堂．雙人限定》', msg: '親愛的陳先生，恭喜獲得跟老婆吃飯的機會，最近的吃飯都跟打仗一樣，希望能有這個機會把弟弟托給你爸媽讓我們有時間可以好好吃一頓飯喔😜' },
-                B: { name: '《戶外放風日》', msg: '親愛的臭爸爸我們想出去玩啦～～請找一天帶我們去動物園吧拜託你🥹' }
+                A: { name: '《深夜食堂・雙人限定版》', msg: '親愛的陳先生，恭喜獲得跟老婆吃飯的機會，最近的吃飯都跟打仗一樣，希望能有這個機會把弟弟托給你爸媽讓我們有時間可以好好吃一頓飯喔😜' },
+                B: { name: '《要悶壞啦・戶外放電計畫》', msg: '親愛的臭爸爸，我們想出去玩啦～～請找一天帶我們去動物園吧拜託你🥹啊這個動物園沒有限制說是台灣的還是國外的喔，You know what I mean😜' }
             },
             '命運': { 
-                A: { name: '《免顧小孩券一天》', msg: '親愛的陳先生你辛苦了，在這段育兒生活中每次都因為我要出差或者回台北讓你自己照顧弟弟，抽到這張券你就不用擔心，隨時想享受me time的時候就用吧！🤩' },
-                B: { name: '《一週家務豁免權》', msg: '做什麼家事！東西放著、尿布放著、奶瓶也放著，通通我來😤這週的我最罩' }
+                A: { name: '《免顧小孩券．One Day》', msg: '親愛的陳先生你辛苦了，在這段育兒生活中每次都因為我要出差或者回台北讓你自己照顧弟弟，抽到這張券你就不用擔心，隨時想享受me time的時候就用吧！🤩' },
+                B: { name: '《家務豁免權．One Week》', msg: '做什麼家事！東西放著、尿布放著、奶瓶也放著，通通我來😤這週的我最罩，但如果我心態很崩或者忙不過來的話，你會幫我的吧🥹會吧會吧' }
             }
         };
 
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '0', width: '0',
-                videoId: 'AH8b7EynJ60', 
-                playerVars: { 
-                    'start': 15,
-                    'autoplay': 0, 
-                    'loop': 1, 
-                    'playlist': 'AH8b7EynJ60',
-                    'playsinline': 1 
-                }
-            });
-        }
+        const audio = document.getElementById('bgMusic');
 
         function startAdventure() {
             if (document.getElementById('pw').value === '20230919') {
-                // 修正音樂中斷問題：先嘗試播放，如果失敗則在 500ms 後再次嘗試
-                if (player && player.playVideo) {
-                    player.playVideo();
-                }
+                // 3. 音樂控制：解鎖後設定起始時間並播放
+                audio.currentTime = 13; // 從 0:13 開始
+                audio.play().catch(error => {
+                    console.log("播放被攔截，可能需要再次點擊畫面上任意處。");
+                });
                 showScreen(2);
             } else { alert('密碼錯誤！'); }
         }
