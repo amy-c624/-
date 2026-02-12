@@ -137,7 +137,7 @@
     <script>
         let currentChoice = '';
         let heartTimers = []; 
-        let isGeneratingHearts = false; // 新增控制鎖
+        let isGeneratingHearts = false; // 愛心生成鎖
 
         const data = {
             '機會': { 
@@ -166,13 +166,15 @@
         }
 
         function resetToPlay() {
-            isGeneratingHearts = false; // 1. 立刻上鎖，阻止任何新的愛心渲染
+            // 1. 立刻斷開愛心生成開關
+            isGeneratingHearts = false; 
             
-            heartTimers.forEach(timer => clearTimeout(timer)); // 2. 清除定時器
+            // 2. 取消所有在排隊中的生成指令
+            heartTimers.forEach(timer => clearTimeout(timer));
             heartTimers = []; 
 
-            const hearts = document.querySelectorAll('.heart'); // 3. 強制移除畫面上所有愛心
-            hearts.forEach(h => h.remove());
+            // 3. 強制從頁面上抹除所有愛心元素
+            document.querySelectorAll('.heart').forEach(h => h.remove());
 
             showScreen(2);
         }
@@ -191,20 +193,22 @@
         }
 
         function burstHearts() {
-            isGeneratingHearts = true; // 開放生成
+            isGeneratingHearts = true; // 開啟生成權限
             heartTimers.forEach(timer => clearTimeout(timer));
             heartTimers = [];
 
             for(let i=0; i<60; i++) {
                 let t = setTimeout(() => {
-                    if (isGeneratingHearts) createHeart(); // 只有在鎖打開的情況下才執行
+                    // 執行前檢查：如果開關已經被 resetToPlay 關掉，就不準生
+                    if (isGeneratingHearts) {
+                        createHeart();
+                    }
                 }, i * 80);
                 heartTimers.push(t);
             }
         }
 
         function createHeart() {
-            if (!isGeneratingHearts) return; // 雙重檢查
             const heart = document.createElement('div');
             heart.className = 'heart';
             heart.innerHTML = '❤️';
