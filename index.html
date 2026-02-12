@@ -11,7 +11,6 @@
             background-color: transparent; overflow: hidden;
         }
 
-        /* 1. 滿版背景：固定在最底層，絕對不會閃爍 */
         .full-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2;
@@ -51,7 +50,6 @@
             cursor: pointer; font-weight: bold; margin-top: 10px;
         }
 
-        /* 卡牌設計 */
         .card-wrap { display: flex; gap: 15px; justify-content: center; margin-top: 15px; }
         .card {
             width: 120px; height: 175px; border-radius: 15px;
@@ -62,7 +60,6 @@
         .card-pink { background: rgba(255, 182, 193, 0.7); color: #d63384; }
         .card-blue { background: rgba(173, 216, 230, 0.7); color: #0077b6; }
 
-        /* 愛心最上層圖層 */
         .heart {
             position: absolute; color: #ff4d6d; font-family: Arial;
             animation: float 4s linear forwards; pointer-events: none;
@@ -131,7 +128,7 @@
             <span id="rewardName" class="reward-title"></span>
             <p id="finalMsg" style="color:#333; font-size:1rem; margin:10px 0; text-align: left; border: 1px dashed #ffb6c1; padding: 15px; border-radius: 15px; background: rgba(255,255,255,0.4);"></p>
             
-            <button class="btn-main" onclick="showScreen(2)">重新挑戰</button>
+            <button class="btn-main" onclick="resetToPlay()">重新挑戰</button>
             <br>
             <button class="btn-main" style="background:#ffb6c1;" onclick="burstHearts()">發送滿天愛心 ❤️</button>
         </div>
@@ -141,12 +138,12 @@
         let currentChoice = '';
         const data = {
             '機會': { 
-                A: { name: '《深夜食堂・雙人限定版》', msg: '親愛的陳先生，恭喜獲得跟老婆吃飯的機會，最近的吃飯都跟打仗一樣，希望能有這個機會把弟弟托給你爸媽讓我們有時間可以好好吃一頓飯喔😜' },
-                B: { name: '《要悶壞啦・戶外放電計畫》', msg: '親愛的臭爸爸，我們想出去玩啦～～請找一天帶我們去動物園吧拜託你🥹啊這個動物園沒有限制說是台灣的還是國外的喔，You know what I mean😜' }
+                A: { name: '《深夜食堂．雙人限定版》', msg: '親愛的陳先生，恭喜獲得跟老婆吃飯的機會，最近的吃飯都跟打仗一樣，希望能有這個機會把弟弟托給你爸媽讓我們有時間可以好好吃一頓飯喔😜' },
+                B: { name: '《要悶壞啦．戶外放電日》', msg: '親愛的臭爸爸我們想出去玩啦～～請找一天帶我們去動物園吧拜託你🥹這個沒限定是台灣的還是國外的喔，You know what I mean😜' }
             },
             '命運': { 
                 A: { name: '《免顧小孩券．One Day》', msg: '親愛的陳先生你辛苦了，在這段育兒生活中每次都因為我要出差或者回台北讓你自己照顧弟弟，抽到這張券你就不用擔心，隨時想享受me time的時候就用吧！🤩' },
-                B: { name: '《家務豁免權．One Week》', msg: '做什麼家事！東西放著、尿布放著、奶瓶也放著，通通我來😤這週的我最罩，但如果我心態很崩或者忙不過來的話，你會幫我的吧🥹會吧會吧' }
+                B: { name: '《家務豁免券．One Week》', msg: '做什麼家事！東西放著、尿布放著、奶瓶也放著，通通我來😤這週的我最罩，你就放心的去玩電腦，翹腳幫迪狗抓抓吧！' }
             }
         };
 
@@ -154,18 +151,22 @@
 
         function startAdventure() {
             if (document.getElementById('pw').value === '20230919') {
-                // 3. 音樂控制：解鎖後設定起始時間並播放
-                audio.currentTime = 13; // 從 0:13 開始
-                audio.play().catch(error => {
-                    console.log("播放被攔截，可能需要再次點擊畫面上任意處。");
-                });
+                audio.currentTime = 13;
+                audio.play().catch(e => console.log("Audio play deferred"));
                 showScreen(2);
             } else { alert('密碼錯誤！'); }
         }
 
+        // 修改後的顯示螢幕函式
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen' + id).classList.add('active');
+        }
+
+        // 專門為「重新挑戰」設計的函式，會清除所有愛心
+        function resetToPlay() {
+            document.querySelectorAll('.heart').forEach(h => h.remove());
+            showScreen(2);
         }
 
         function confirmChoice(choice) {
