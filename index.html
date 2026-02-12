@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Surprise for You</title>
+    <title>A Special Surprise for My Dearest Husband</title>
     <style>
         body {
             background-color: #fff5f5;
@@ -28,18 +28,19 @@
         }
 
         h1 { color: #ff4d6d; font-size: 1.5rem; }
-        p { color: #666; }
+        p { color: #666; line-height: 1.6; }
 
         /* Password Section */
         #password-screen { display: block; }
         input[type="password"] {
-            padding: 10px;
+            padding: 12px;
             width: 80%;
             border: 2px solid #ffb6c1;
             border-radius: 10px;
-            margin: 10px 0;
+            margin: 15px 0;
             outline: none;
             text-align: center;
+            font-size: 1rem;
         }
         
         /* Surprise Section */
@@ -66,6 +67,16 @@
             opacity: 0;
         }
 
+        .gift-card {
+            background: #fff0f3;
+            border: 2px dashed #ff4d6d;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            color: #ff4d6d;
+            font-weight: bold;
+        }
+
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes float {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
@@ -81,9 +92,7 @@
             font-size: 1rem;
             cursor: pointer;
             margin-top: 10px;
-            transition: background 0.3s;
         }
-        button:hover { background-color: #ff3355; }
     </style>
 </head>
 <body>
@@ -91,7 +100,7 @@
     <div id="password-screen" class="container">
         <h1>Private Message</h1>
         <p>Hint: Our Wedding Anniversary</p>
-        <input type="password" id="passwordInput" placeholder="Enter the date (e.g. 20240520)">
+        <input type="password" id="passwordInput" placeholder="YYYYMMDD">
         <br>
         <button onclick="checkPassword()">Unlock Surprise</button>
     </div>
@@ -102,17 +111,21 @@
         
         <div id="message">
             <h2>Happy Valentine's Day! ✨</h2>
-            <p>Every moment with you feels like a beautiful journey.</p>
-            <p><strong>Thank you for being by my side.</strong></p>
-            <p style="color: #ff4d6d; font-weight: bold;">[ Your Special Gift Description Here ]</p>
+            <p>Even with our busy lives and our little one waking us up before dawn, every moment with you is a beautiful adventure.</p>
+            <p><strong>Thank you for being the most amazing husband and father.</strong></p>
+            
+            <div class="gift-card">
+                🎟️ SPECIAL GIFT: <br>
+                "ONE-DAY OFF VOUCHER"<br>
+                <span style="font-size: 0.8rem; font-weight: normal;">(Wife takes full charge of the baby today!)</span>
+            </div>
+            
             <button onclick="createHearts()">Send More Hearts ❤️</button>
         </div>
     </div>
 
     <script>
-        // --- 請在下方修改你的密碼 ---
-        const CORRECT_PASSWORD = "你的結婚紀念日"; // 例如 "20240520"
-        // --------------------------
+        const CORRECT_PASSWORD = "20230919";
 
         function checkPassword() {
             const input = document.getElementById('passwordInput').value;
@@ -120,13 +133,13 @@
                 document.getElementById('password-screen').style.display = 'none';
                 document.getElementById('surprise-screen').style.display = 'block';
             } else {
-                alert("Incorrect password. Please try again! ❤️");
+                alert("Incorrect password. Try our special date! ❤️");
             }
         }
 
         function showSurprise() {
             document.getElementById('gift').style.display = 'none';
-            document.getElementById('title').innerText = "For My Dearest";
+            document.getElementById('title').innerText = "For My Dearest Husband";
             document.getElementById('message').style.display = 'block';
             createHearts();
         }
