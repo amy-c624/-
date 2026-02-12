@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Surprise for You</title>
+    <style>
+        body {
+            background-color: #fff5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.4);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 { color: #ff4d6d; font-size: 1.5rem; }
+        p { color: #666; }
+
+        /* Password Section */
+        #password-screen { display: block; }
+        input[type="password"] {
+            padding: 10px;
+            width: 80%;
+            border: 2px solid #ffb6c1;
+            border-radius: 10px;
+            margin: 10px 0;
+            outline: none;
+            text-align: center;
+        }
+        
+        /* Surprise Section */
+        #surprise-screen { display: none; }
+
+        .gift-box {
+            font-size: 80px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            margin: 20px 0;
+        }
+
+        .gift-box:hover { transform: scale(1.1) rotate(5deg); }
+
+        #message {
+            display: none;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .heart {
+            color: #ff4d6d;
+            position: absolute;
+            animation: float 3s infinite linear;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        button {
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        button:hover { background-color: #ff3355; }
+    </style>
+</head>
+<body>
+
+    <div id="password-screen" class="container">
+        <h1>Private Message</h1>
+        <p>Hint: Our Wedding Anniversary</p>
+        <input type="password" id="passwordInput" placeholder="Enter the date (e.g. 20240520)">
+        <br>
+        <button onclick="checkPassword()">Unlock Surprise</button>
+    </div>
+
+    <div id="surprise-screen" class="container">
+        <h1 id="title">A special delivery for you 🎁</h1>
+        <div class="gift-box" id="gift" onclick="showSurprise()">🎁</div>
+        
+        <div id="message">
+            <h2>Happy Valentine's Day! ✨</h2>
+            <p>Every moment with you feels like a beautiful journey.</p>
+            <p><strong>Thank you for being by my side.</strong></p>
+            <p style="color: #ff4d6d; font-weight: bold;">[ Your Special Gift Description Here ]</p>
+            <button onclick="createHearts()">Send More Hearts ❤️</button>
+        </div>
+    </div>
+
+    <script>
+        // --- 請在下方修改你的密碼 ---
+        const CORRECT_PASSWORD = "你的結婚紀念日"; // 例如 "20240520"
+        // --------------------------
+
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === CORRECT_PASSWORD) {
+                document.getElementById('password-screen').style.display = 'none';
+                document.getElementById('surprise-screen').style.display = 'block';
+            } else {
+                alert("Incorrect password. Please try again! ❤️");
+            }
+        }
+
+        function showSurprise() {
+            document.getElementById('gift').style.display = 'none';
+            document.getElementById('title').innerText = "For My Dearest";
+            document.getElementById('message').style.display = 'block';
+            createHearts();
+        }
+
+        function createHearts() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 100);
+            }
+        }
+    </script>
+</body>
+</html>
