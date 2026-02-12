@@ -157,15 +157,15 @@
             } else { alert('密碼錯誤！'); }
         }
 
-        // 修改後的顯示螢幕函式
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen' + id).classList.add('active');
         }
 
-        // 專門為「重新挑戰」設計的函式，會清除所有愛心
+        // 核心修正：點擊重新挑戰時會找到所有 .heart 並刪除
         function resetToPlay() {
-            document.querySelectorAll('.heart').forEach(h => h.remove());
+            const hearts = document.querySelectorAll('.heart');
+            hearts.forEach(h => h.remove());
             showScreen(2);
         }
 
