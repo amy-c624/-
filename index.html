@@ -1,161 +1,285 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Surprise for My Dearest Husband</title>
+    <title>給老公的情人節驚喜</title>
+    <link href="https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #fff5f5;
-            display: flex;
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: #fff5f5;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Zhi Mang Xing', cursive, "Microsoft JhengHei", sans-serif;
+            overflow: hidden;
+            background-color: var(--soft-pink);
+        }
+
+        .screen {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-        }
-
-        .container {
             text-align: center;
-            padding: 30px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.4);
-            max-width: 400px;
-            width: 90%;
+            animation: fadeIn 0.8s ease;
+            z-index: 1;
         }
 
-        h1 { color: #ff4d6d; font-size: 1.5rem; }
-        p { color: #666; line-height: 1.6; }
+        .active { display: flex; }
 
-        /* Password Section */
-        #password-screen { display: block; }
-        input[type="password"] {
-            padding: 12px;
-            width: 80%;
-            border: 2px solid #ffb6c1;
-            border-radius: 10px;
-            margin: 15px 0;
-            outline: none;
-            text-align: center;
-            font-size: 1rem;
-        }
-        
-        /* Surprise Section */
-        #surprise-screen { display: none; }
-
-        .gift-box {
-            font-size: 80px;
-            cursor: pointer;
-            transition: transform 0.3s;
-            margin: 20px 0;
-        }
-
-        .gift-box:hover { transform: scale(1.1) rotate(5deg); }
-
-        #message {
-            display: none;
-            animation: fadeIn 1s ease-in;
-        }
-
-        .heart {
-            color: #ff4d6d;
+        .bg-gif {
             position: absolute;
-            animation: float 3s infinite linear;
-            opacity: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.6;
         }
 
-        .gift-card {
-            background: #fff0f3;
-            border: 2px dashed #ff4d6d;
+        .content-box {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 85%;
+            backdrop-filter: blur(5px);
+        }
+
+        h1 { color: var(--primary-pink); font-size: 2.2rem; margin-bottom: 20px; }
+        p { font-size: 1.3rem; color: #444; line-height: 1.5; }
+
+        input[type="password"] {
             padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
+            border-radius: 50px;
+            border: 2px solid var(--primary-pink);
+            width: 80%;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .btn {
+            background: var(--primary-pink);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin: 10px;
+            font-family: inherit;
+        }
+
+        .btn:hover { transform: scale(1.05); background: #ff3355; }
+        .btn-secondary { background: #999; }
+
+        .card-container { display: flex; gap: 20px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
+        
+        .card {
+            width: 120px;
+            height: 180px;
+            background: linear-gradient(135deg, #ff4d6d 0%, #ff85a1 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-10px) rotate(2deg); }
+
+        .gift-result {
+            font-size: 1.8rem;
             color: #ff4d6d;
             font-weight: bold;
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px dashed #ff4d6d;
+            border-radius: 15px;
+            background: #fff0f3;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-        }
-
-        button {
-            background-color: #ff4d6d;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-size: 1rem;
+        /* 音樂播放器樣式 */
+        #music-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
             cursor: pointer;
-            margin-top: 10px;
         }
+
+        .music-disk {
+            width: 50px;
+            height: 50px;
+            background: url('https://cdn-icons-png.flaticon.com/512/103/103956.png') no-repeat center/cover;
+            border-radius: 50%;
+            animation: rotate 3s infinite linear;
+            animation-play-state: paused;
+        }
+
+        .music-disk.playing { animation-play-state: running; }
+
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .heart { position: absolute; color: var(--primary-pink); animation: float 3s infinite linear; pointer-events: none; }
+        @keyframes float { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-100vh); opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div id="password-screen" class="container">
-        <h1>Private Message</h1>
-        <p>Hint: Our Wedding Anniversary</p>
-        <input type="password" id="passwordInput" placeholder="YYYYMMDD">
-        <br>
-        <button onclick="checkPassword()">Unlock Surprise</button>
+    <div id="music-container" onclick="toggleMusic()">
+        <div class="music-disk" id="disk"></div>
+        <p style="font-size: 10px; margin: 0; color: #ff4d6d;">♪ Music</p>
+    </div>
+    <audio id="bgm" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <iframe id="youtube-player" style="display:none" width="0" height="0" src="https://www.youtube.com/embed/ORrFJ63nlcA?enablejsapi=1" frameborder="0"></iframe>
+    </audio>
+
+    <div id="screen1" class="screen active">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHYxc2F2b3B0ZzZ0ZzR0ZzZ0ZzR0ZzZ0ZzR0ZzZ0ZzR0ZzZ0ZzR0Jm&ep=v1_gifs_search&rid=giphy.gif" class="bg-gif">
+        <div class="content-box">
+            <h1>情人節祕密驚喜</h1>
+            <p>請輸入我們的專屬密碼解鎖</p>
+            <input type="password" id="pw" placeholder="YYYYMMDD">
+            <br>
+            <button class="btn" onclick="checkPw()">開啟驚喜</button>
+        </div>
     </div>
 
-    <div id="surprise-screen" class="container">
-        <h1 id="title">A special delivery for you 🎁</h1>
-        <div class="gift-box" id="gift" onclick="showSurprise()">🎁</div>
-        
-        <div id="message">
-            <h2>Happy Valentine's Day! ✨</h2>
-            <p>Even with our busy lives and our little one waking us up before dawn, every moment with you is a beautiful adventure.</p>
-            <p><strong>Thank you for being the most amazing husband and father.</strong></p>
-            
-            <div class="gift-card">
-                🎟️ SPECIAL GIFT: <br>
-                "ONE-DAY OFF VOUCHER"<br>
-                <span style="font-size: 0.8rem; font-weight: normal;">(Wife takes full charge of the baby today!)</span>
+    <div id="screen2" class="screen">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHM1dDRqbmR4bnd4bHh4bHh4bHh4bHh4bHh4bHh4bHh4bHh4biZlcD12MV9naWZzX3NlYXJjaCZyaWQ9Z2lwaHkuZ2lm/iO6On60T594H7j4iWz/giphy.gif" class="bg-gif">
+        <div class="content-box">
+            <h1>博弈時刻！</h1>
+            <p>親愛的老公，請選擇今日的運氣：</p>
+            <div class="card-container">
+                <div class="card" onclick="confirmChoice('機會')">機會</div>
+                <div class="card" style="background: linear-gradient(135deg, #444 0%, #777 100%);" onclick="confirmChoice('命運')">命運</div>
             </div>
-            
-            <button onclick="createHearts()">Send More Hearts ❤️</button>
+        </div>
+    </div>
+
+    <div id="screen3" class="screen">
+        <div class="content-box">
+            <h1 id="confirmTitle">神祕的抉擇</h1>
+            <p>Are you sure you want to choose this card?</p>
+            <p>( 你確定要選擇此張卡牌嗎？ )</p>
+            <button class="btn" onclick="goToOptions()">確定</button>
+            <button class="btn btn-secondary" onclick="goBack(2)">返回</button>
+        </div>
+    </div>
+
+    <div id="screen4" class="screen">
+        <div class="content-box">
+            <h1>命運交給手氣</h1>
+            <p>請從下方選出一張獎勵卡：</p>
+            <div class="card-container">
+                <button class="btn" onclick="finalSurprise('A')">選項 A</button>
+                <button class="btn" onclick="finalSurprise('B')">選項 B</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen5" class="screen">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnR3Ynh4bHh4bHh4bHh4bHh4bHh4bHh4bHh4bHh4bHh4biZlcD12MV9naWZzX3NlYXJjaCZyaWQ9Z2lwaHkuZ2lm/l4pTdcifP3X2GpwPu/giphy.gif" class="bg-gif">
+        <div class="content-box">
+            <h1>🎉 恭喜獲獎！</h1>
+            <div id="finalMsg" class="gift-result"></div>
+            <hr>
+            <p>老公情人節快樂！✨<br>
+               謝謝你跟我一起經營這個家，<br>
+               即便每天被小寶貝提早叫醒，<br>
+               有你在身邊，每天都是最棒的冒險。<br>
+               <strong>我愛你！</strong></p>
+            <button class="btn" onclick="createHearts()">發送更多愛心 ❤️</button>
         </div>
     </div>
 
     <script>
-        const CORRECT_PASSWORD = "20230919";
+        let currentChoice = '';
+        const data = {
+            '機會': { 
+                A: '恭喜獲得：請老婆吃飯一次！', 
+                B: '恭喜獲得：帶老婆小孩出去玩！' 
+            },
+            '命運': { 
+                A: '恭喜獲得：不用照顧小孩一天（老婆全職帶娃券）！', 
+                B: '恭喜獲得：家務豁免權一週（老婆全包了）！' 
+            }
+        };
 
-        function checkPassword() {
-            const input = document.getElementById('passwordInput').value;
-            if (input === CORRECT_PASSWORD) {
-                document.getElementById('password-screen').style.display = 'none';
-                document.getElementById('surprise-screen').style.display = 'block';
+        function toggleMusic() {
+            const player = document.getElementById('youtube-player');
+            const disk = document.getElementById('disk');
+            // 此處為簡易切換逻辑，實務上 YouTube iframe 控制需配合 API
+            // 為了演示效果，這裡僅控制圖示旋轉
+            if (disk.classList.contains('playing')) {
+                disk.classList.remove('playing');
             } else {
-                alert("Incorrect password. Try our special date! ❤️");
+                disk.classList.add('playing');
+                alert("播放 Lauv - All 4 Nothing (I'm So In Love) ♪");
             }
         }
 
-        function showSurprise() {
-            document.getElementById('gift').style.display = 'none';
-            document.getElementById('title').innerText = "For My Dearest Husband";
-            document.getElementById('message').style.display = 'block';
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('screen' + id).classList.add('active');
+        }
+
+        function checkPw() {
+            if (document.getElementById('pw').value === '20230919') {
+                showScreen(2);
+                document.getElementById('disk').classList.add('playing');
+            } else {
+                alert('密碼錯誤，請回想我們的結婚紀念日！');
+            }
+        }
+
+        function confirmChoice(choice) {
+            currentChoice = choice;
+            document.getElementById('confirmTitle').innerText = `【${choice}】的抉擇`;
+            showScreen(3);
+        }
+
+        function goBack(id) { showScreen(id); }
+        function goToOptions() { showScreen(4); }
+
+        function finalSurprise(letter) {
+            const gift = data[currentChoice][letter];
+            document.getElementById('finalMsg').innerText = gift;
+            showScreen(5);
             createHearts();
         }
 
         function createHearts() {
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 30; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
-                    heart.classList.add('heart');
+                    heart.className = 'heart';
                     heart.innerHTML = '❤️';
                     heart.style.left = Math.random() * 100 + 'vw';
-                    heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
                     heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
                     document.body.appendChild(heart);
                     setTimeout(() => heart.remove(), 3000);
-                }, i * 100);
+                }, i * 150);
             }
         }
     </script>
