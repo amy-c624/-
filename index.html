@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>給老公的情人節驚喜</title>
     <style>
-        /* 全局字體與背景設定 */
         body, html {
             margin: 0; padding: 0; height: 100%;
-            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
-            background-color: #000; overflow: hidden;
+            font-family: "Microsoft JhengHei", sans-serif;
+            background-color: transparent; overflow: hidden;
         }
 
-        /* 滿版背景：固定不動，切換頁面不影響它 */
+        /* 滿版動態背景 - 確保檔名 IMG_8227.gif 小寫正確 */
         .full-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2;
@@ -20,7 +19,6 @@
             background-size: cover;
         }
 
-        /* 頁面基本樣式 */
         .screen {
             display: none; width: 100%; height: 100%;
             position: absolute; top: 0; left: 0;
@@ -30,11 +28,11 @@
         .active { display: flex; animation: fadeIn 0.5s ease; }
 
         .content-box {
-            background: rgba(255, 255, 255, 0.7); /* 50-70% 透明感 */
+            background: rgba(255, 255, 255, 0.6); /* 增加透明度讓背景更明顯 */
             padding: 25px; border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             max-width: 85%; width: 280px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(5px);
             z-index: 10;
         }
 
@@ -52,7 +50,6 @@
             cursor: pointer; font-weight: bold; margin-top: 10px;
         }
 
-        /* 卡牌樣式：半透明設計 */
         .card-wrap { display: flex; gap: 15px; justify-content: center; margin-top: 15px; }
         .card {
             width: 110px; height: 160px; border-radius: 15px;
@@ -63,7 +60,7 @@
         .card-pink { background: rgba(255, 182, 193, 0.6); color: #d63384; }
         .card-blue { background: rgba(173, 216, 230, 0.6); color: #0077b6; }
 
-        /* 愛心圖層：最上層 */
+        /* 愛心圖層：最高圖層 */
         .heart {
             position: absolute; color: #ff4d6d; font-family: Arial;
             animation: float 4s linear; pointer-events: none;
@@ -81,14 +78,14 @@
 
     <div class="full-bg"></div>
 
-    <audio id="loveAudio" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        </audio>
+    <div id="player-container" style="display:none">
+        <div id="player"></div>
+    </div>
 
     <div id="screen1" class="screen active">
         <div class="content-box">
             <h1>Valentine's Secret</h1>
-            <p>請輸入 20230919 解鎖</p>
+            <p>請輸入結婚紀念日解鎖</p>
             <input type="password" id="pw" placeholder="YYYYMMDD">
             <br>
             <button class="btn-main" onclick="startAdventure()">Unlock Surprise</button>
@@ -98,7 +95,7 @@
     <div id="screen2" class="screen">
         <div class="content-box">
             <h1>抉擇時刻</h1>
-            <p>老公，請選擇今日的運氣卡：</p>
+            <p>親愛的老公，請抽牌：</p>
             <div class="card-wrap">
                 <div class="card card-pink" onclick="confirmChoice('機會')">機會</div>
                 <div class="card card-blue" onclick="confirmChoice('命運')">命運</div>
@@ -135,24 +132,36 @@
                有你就是最棒的冒險。我愛你！</p>
             <button class="btn-main" onclick="showScreen(2)">再玩一次</button>
             <br>
-            <button class="btn-main" style="background:#ffb6c1;" onclick="createHearts()">發送愛心 ❤️</button>
+            <button class="btn-main" style="background:#ffb6c1;" onclick="burstHearts()">發送滿天愛心 ❤️</button>
         </div>
     </div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let currentChoice = '';
+        let player;
         const data = {
             '機會': { A: '恭喜獲得：請老婆吃飯一次！', B: '恭喜獲得：帶老婆小孩出去玩！' },
             '命運': { A: '恭喜獲得：免顧小孩券一天！', B: '恭喜獲得：一週家務豁免權！' }
         };
 
-        // 解鎖並啟動全局音樂與愛心
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '0', width: '0',
+                videoId: 'AH8b7EynJ60', 
+                playerVars: { 
+                    'start': 15,
+                    'autoplay': 0, 
+                    'loop': 1, 
+                    'playlist': 'AH8b7EynJ60' 
+                }
+            });
+        }
+
         function startAdventure() {
             if (document.getElementById('pw').value === '20230919') {
-                const audio = document.getElementById('loveAudio');
-                audio.play();
+                if (player && player.playVideo) player.playVideo();
                 showScreen(2);
-                setInterval(createHearts, 800); // 持續在背景噴發愛心
             } else { alert('密碼錯誤！'); }
         }
 
@@ -172,12 +181,19 @@
             showScreen(5);
         }
 
-        function createHearts() {
+        // 最後一頁發送愛心
+        function burstHearts() {
+            for(let i=0; i<50; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+        }
+
+        function createHeart() {
             const heart = document.createElement('div');
             heart.className = 'heart';
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            heart.style.fontSize = (Math.random() * 25 + 20) + 'px';
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 4000);
         }
