@@ -36,8 +36,9 @@
             z-index: 10;
         }
 
-        h1 { color: #ff4d6d; font-size: 1.5rem; margin-bottom: 15px; font-weight: bold; }
-        p { color: #333; font-size: 1.1rem; font-weight: bold; line-height: 1.6; }
+        h1 { color: #ff4d6d; font-size: 1.5rem; margin-bottom: 10px; font-weight: bold; }
+        .reward-title { color: #ff4d6d; font-size: 1.3rem; font-weight: bold; margin-bottom: 15px; display: block; }
+        p { color: #333; font-size: 1.05rem; font-weight: bold; line-height: 1.6; }
 
         input[type="password"] {
             padding: 12px; border-radius: 10px; border: 2px solid #ffb6c1;
@@ -124,9 +125,10 @@
     </div>
 
     <div id="screen5" class="screen">
-        <div class="content-box" style="width: 310px; max-width: 90%;">
-            <h1>🎉 恭喜獲獎！</h1>
-            <p id="finalMsg" style="color:#ff4d6d; font-size:1.1rem; margin:15px 0; text-align: left; border: 1px dashed #ffb6c1; padding: 15px; border-radius: 15px; background: rgba(255,255,255,0.4);"></p>
+        <div class="content-box" style="width: 320px; max-width: 90%;">
+            <h1>恭喜獲獎！</h1>
+            <span id="rewardName" class="reward-title"></span>
+            <p id="finalMsg" style="color:#333; font-size:1rem; margin:10px 0; text-align: left; border: 1px dashed #ffb6c1; padding: 15px; border-radius: 15px; background: rgba(255,255,255,0.4);"></p>
             
             <button class="btn-main" onclick="showScreen(2)">重新挑戰</button>
             <br>
@@ -140,12 +142,12 @@
         let player;
         const data = {
             '機會': { 
-                A: '親愛的陳先生，恭喜獲得跟老婆吃飯的機會，最近的吃飯都跟打仗一樣，希望能有這個機會把弟弟托給你爸媽讓我們有時間可以好好吃一頓飯喔😜', 
-                B: '親愛的臭爸爸我們想出去玩啦～～請找一天帶我們去動物園吧拜託你🥹' 
+                A: { name: '《請老婆吃飯一次》', msg: '親愛的陳先生，恭喜獲得跟老婆吃飯的機會，最近的吃飯都跟打仗一樣，希望能有這個機會把弟弟托給你爸媽讓我們有時間可以好好吃一頓飯喔😜' },
+                B: { name: '《帶老婆小孩出去玩》', msg: '親愛的臭爸爸我們想出去玩啦～～請找一天帶我們去動物園吧拜託你🥹' }
             },
             '命運': { 
-                A: '親愛的陳先生你辛苦了，在這段育兒生活中每次都因為我要出差或者回台北讓你自己照顧弟弟，抽到這張券你就不用擔心，隨時想享受me time的時候就用吧！🤩', 
-                B: '做什麼家事！東西放著、尿布放著、奶瓶也放著，通通我來😤這週的我最罩' 
+                A: { name: '《免顧小孩券一天》', msg: '親愛的陳先生你辛苦了，在這段育兒生活中每次都因為我要出差或者回台北讓你自己照顧弟弟，抽到這張券你就不用擔心，隨時想享受me time的時候就用吧！🤩' },
+                B: { name: '《一週家務豁免權》', msg: '做什麼家事！東西放著、尿布放著、奶瓶也放著，通通我來😤這週的我最罩' }
             }
         };
 
@@ -165,6 +167,7 @@
 
         function startAdventure() {
             if (document.getElementById('pw').value === '20230919') {
+                // 修正音樂中斷問題：先嘗試播放，如果失敗則在 500ms 後再次嘗試
                 if (player && player.playVideo) {
                     player.playVideo();
                 }
@@ -184,7 +187,9 @@
         }
 
         function finalSurprise(letter) {
-            document.getElementById('finalMsg').innerText = data[currentChoice][letter];
+            const result = data[currentChoice][letter];
+            document.getElementById('rewardName').innerText = result.name;
+            document.getElementById('finalMsg').innerText = result.msg;
             showScreen(5);
         }
 
