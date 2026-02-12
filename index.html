@@ -5,99 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>給老公的情人節驚喜</title>
     <style>
-        /* 強制使用最穩定的繁體中文字體 */
+        /* 全局字體與背景設定 */
         body, html {
             margin: 0; padding: 0; height: 100%;
-            font-family: "Microsoft JhengHei", "PingFang TC", "Heiti TC", sans-serif;
-            background-color: #000;
-            overflow: hidden;
-            color: #444;
+            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+            background-color: #000; overflow: hidden;
         }
 
-        /* 滿版動態背景 */
+        /* 滿版背景：固定不動，切換頁面不影響它 */
         .full-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
+            z-index: -2;
             background: url('IMG_8227.gif') no-repeat center center;
             background-size: cover;
         }
 
+        /* 頁面基本樣式 */
         .screen {
             display: none; width: 100%; height: 100%;
             position: absolute; top: 0; left: 0;
             flex-direction: column; align-items: center; justify-content: center;
             text-align: center;
         }
-        .active { display: flex; animation: fadeIn 0.8s ease; }
+        .active { display: flex; animation: fadeIn 0.5s ease; }
 
         .content-box {
-            background: rgba(255, 255, 255, 0.75); /* 50%透明度效果 */
-            padding: 30px; border-radius: 25px;
+            background: rgba(255, 255, 255, 0.7); /* 50-70% 透明感 */
+            padding: 25px; border-radius: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            max-width: 80%; width: 300px;
+            max-width: 85%; width: 280px;
             backdrop-filter: blur(10px);
+            z-index: 10;
         }
 
-        h1 { color: #ff4d6d; font-size: 1.6rem; margin-bottom: 20px; font-weight: bold; }
-        p { font-size: 1.1rem; font-weight: bold; line-height: 1.6; }
+        h1 { color: #ff4d6d; font-size: 1.5rem; margin-bottom: 15px; }
+        p { color: #444; font-size: 1.1rem; font-weight: bold; line-height: 1.5; }
 
         input[type="password"] {
             padding: 12px; border-radius: 10px; border: 2px solid #ffb6c1;
-            width: 80%; text-align: center; font-size: 1.1rem; margin-bottom: 20px;
-            background: rgba(255,255,255,0.8);
+            width: 80%; text-align: center; font-size: 1.1rem; margin-bottom: 15px;
         }
 
         .btn-main {
             background: #ff4d6d; color: white; border: none;
-            padding: 12px 35px; border-radius: 50px; font-size: 1.1rem;
-            cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(255,77,109,0.3);
+            padding: 10px 25px; border-radius: 50px; font-size: 1rem;
+            cursor: pointer; font-weight: bold; margin-top: 10px;
         }
 
-        /* 卡牌設計 - 圓弧角長方形 + 50%透明度 */
-        .card-wrap { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
+        /* 卡牌樣式：半透明設計 */
+        .card-wrap { display: flex; gap: 15px; justify-content: center; margin-top: 15px; }
         .card {
-            width: 120px; height: 180px;
-            border-radius: 15px; display: flex; align-items: center;
-            justify-content: center; font-size: 1.4rem; font-weight: bold;
-            cursor: pointer; transition: 0.3s;
-            border: 2px solid rgba(255,255,255,0.8);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 110px; height: 160px; border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; font-weight: bold; cursor: pointer;
+            transition: 0.2s; border: 1.5px solid rgba(255,255,255,0.8);
         }
-        /* 機會 & 卡牌A - 粉色系 */
-        .card-pink { background: rgba(255, 182, 193, 0.5); color: #d63384; }
-        /* 命運 & 卡牌B - 淡藍色系 */
-        .card-blue { background: rgba(173, 216, 230, 0.5); color: #0077b6; }
-        
-        .card:hover { transform: scale(1.05); }
+        .card-pink { background: rgba(255, 182, 193, 0.6); color: #d63384; }
+        .card-blue { background: rgba(173, 216, 230, 0.6); color: #0077b6; }
+
+        /* 愛心圖層：最上層 */
+        .heart {
+            position: absolute; color: #ff4d6d; font-family: Arial;
+            animation: float 4s linear; pointer-events: none;
+            z-index: 9999 !important; 
+        }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .heart { position: absolute; color: #ff4d6d; animation: float 3s linear; pointer-events: none; z-index: 99; }
-        @keyframes float { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-100vh); opacity: 0; } }
+        @keyframes float { 
+            0% { transform: translateY(105vh) scale(0.5); opacity: 1; } 
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } 
+        }
     </style>
 </head>
 <body>
 
     <div class="full-bg"></div>
 
-    <div id="player-container" style="display:none">
-        <div id="player"></div>
-    </div>
+    <audio id="loveAudio" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        </audio>
 
     <div id="screen1" class="screen active">
         <div class="content-box">
-            <h1>情人節祕密驚喜</h1>
-            <p>請輸入結婚紀念日解鎖</p>
+            <h1>Valentine's Secret</h1>
+            <p>請輸入 20230919 解鎖</p>
             <input type="password" id="pw" placeholder="YYYYMMDD">
             <br>
-            <button class="btn-main" onclick="checkPw()">點擊解鎖驚喜</button>
-            <p style="font-size: 12px; color: #888; margin-top: 10px;">(點擊後將自動播放音樂 ♪)</p>
+            <button class="btn-main" onclick="startAdventure()">Unlock Surprise</button>
         </div>
     </div>
 
     <div id="screen2" class="screen">
         <div class="content-box">
-            <h1>命運抉擇</h1>
-            <p>親愛的老公，請抽牌：</p>
+            <h1>抉擇時刻</h1>
+            <p>老公，請選擇今日的運氣卡：</p>
             <div class="card-wrap">
                 <div class="card card-pink" onclick="confirmChoice('機會')">機會</div>
                 <div class="card card-blue" onclick="confirmChoice('命運')">命運</div>
@@ -108,17 +109,16 @@
     <div id="screen3" class="screen">
         <div class="content-box">
             <h1 id="confirmTitle">抉擇時刻</h1>
-            <p>Are you sure you want to choose this card?</p>
-            <p>( 你確定要選擇這張卡牌嗎？ )</p>
+            <p>Are you sure?</p>
+            <p>( 確定選擇這張卡牌嗎？ )</p>
             <button class="btn-main" onclick="showScreen(4)">確定</button>
-            <button class="btn-main" style="background:#999; margin-top:10px;" onclick="showScreen(2)">返回</button>
+            <button class="btn-main" style="background:#999;" onclick="showScreen(2)">返回</button>
         </div>
     </div>
 
     <div id="screen4" class="screen">
         <div class="content-box">
-            <h1>翻開驚喜</h1>
-            <p>請從兩張獎勵中擇一：</p>
+            <h1>翻開卡牌</h1>
             <div class="card-wrap">
                 <div class="card card-pink" onclick="finalSurprise('A')">卡牌 A</div>
                 <div class="card card-blue" onclick="finalSurprise('B')">卡牌 B</div>
@@ -128,47 +128,37 @@
 
     <div id="screen5" class="screen">
         <div class="content-box">
-            <h1>🎉 恭喜獲獎！</h1>
-            <p id="finalMsg" style="color:#ff4d6d; font-size:1.3rem; border:2px dashed #ff4d6d; padding:10px; margin:15px 0; background:rgba(255,255,255,0.6);"></p>
-            <p>老公情人節快樂！✨<br>
-               謝謝你跟我一起經營這個家，<br>
-               即便每天被小寶貝提早叫醒，<br>
-               有你在身邊，每天都是最棒的冒險。<br>
-               <strong>我愛你！</strong></p>
-            <button class="btn-main" onclick="createHearts()">發送愛心 ❤️</button>
+            <h1>🎉 Happy Valentine!</h1>
+            <p id="finalMsg" style="color:#ff4d6d; font-size:1.2rem; margin:10px 0; font-weight:bold;"></p>
+            <p>謝謝你陪我一起經營這個家，<br>
+               即便小寶貝最近不到 6 點就起床，<br>
+               有你就是最棒的冒險。我愛你！</p>
+            <button class="btn-main" onclick="showScreen(2)">再玩一次</button>
+            <br>
+            <button class="btn-main" style="background:#ffb6c1;" onclick="createHearts()">發送愛心 ❤️</button>
         </div>
     </div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let currentChoice = '';
-        let player;
         const data = {
             '機會': { A: '恭喜獲得：請老婆吃飯一次！', B: '恭喜獲得：帶老婆小孩出去玩！' },
-            '命運': { A: '恭喜獲得：免顧小孩券一天（老婆全帶）！', B: '恭喜獲得：一週家務豁免權（老婆全包）！' }
+            '命運': { A: '恭喜獲得：免顧小孩券一天！', B: '恭喜獲得：一週家務豁免權！' }
         };
 
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '0', width: '0',
-                videoId: 'haE_xW162Dk', // Lauv - All 4 Nothing
-                playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': 'haE_xW162Dk' }
-            });
+        // 解鎖並啟動全局音樂與愛心
+        function startAdventure() {
+            if (document.getElementById('pw').value === '20230919') {
+                const audio = document.getElementById('loveAudio');
+                audio.play();
+                showScreen(2);
+                setInterval(createHearts, 800); // 持續在背景噴發愛心
+            } else { alert('密碼錯誤！'); }
         }
 
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen' + id).classList.add('active');
-        }
-
-        function checkPw() {
-            // 結婚紀念日密碼
-            if (document.getElementById('pw').value === '20230919') {
-                showScreen(2);
-                if (player && player.playVideo) player.playVideo(); // 使用者互動後播放
-            } else {
-                alert('密碼錯誤！請輸入我們的結婚紀念日。');
-            }
         }
 
         function confirmChoice(choice) {
@@ -180,20 +170,16 @@
         function finalSurprise(letter) {
             document.getElementById('finalMsg').innerText = data[currentChoice][letter];
             showScreen(5);
-            createHearts();
         }
 
         function createHearts() {
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.className = 'heart'; heart.innerHTML = '❤️';
-                    heart.style.left = Math.random() * 100 + 'vw';
-                    heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
-                    document.body.appendChild(heart);
-                    setTimeout(() => heart.remove(), 3000);
-                }, i * 150);
-            }
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
         }
     </script>
 </body>
