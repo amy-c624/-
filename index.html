@@ -136,6 +136,7 @@
 
     <script>
         let currentChoice = '';
+        let heartTimers = []; // 用來追蹤所有的愛心定時器
         const data = {
             '機會': { 
                 A: { name: '《深夜食堂．雙人限定版》', msg: '親愛的陳先生，恭喜獲得跟老婆吃飯的機會，最近的吃飯都跟打仗一樣，希望能有這個機會把弟弟托給你爸媽讓我們有時間可以好好吃一頓飯喔😜' },
@@ -162,10 +163,15 @@
             document.getElementById('screen' + id).classList.add('active');
         }
 
-        // 核心修正：點擊重新挑戰時會找到所有 .heart 並刪除
+        // 修改：按下重新挑戰時，即刻清除畫面愛心並取消所有後續生成
         function resetToPlay() {
-            const hearts = document.querySelectorAll('.heart');
-            hearts.forEach(h => h.remove());
+            // 1. 取消所有排隊中的愛心生成指令
+            heartTimers.forEach(timer => clearTimeout(timer));
+            heartTimers = []; 
+
+            // 2. 清除畫面上已經跑出來的愛心
+            document.querySelectorAll('.heart').forEach(h => h.remove());
+
             showScreen(2);
         }
 
@@ -183,8 +189,13 @@
         }
 
         function burstHearts() {
+            // 先清空一次，防止連點導致愛心數量過多
+            heartTimers.forEach(timer => clearTimeout(timer));
+            heartTimers = [];
+
             for(let i=0; i<60; i++) {
-                setTimeout(createHeart, i * 80);
+                let t = setTimeout(createHeart, i * 80);
+                heartTimers.push(t); // 把每個排隊指令記下來
             }
         }
 
